@@ -119,7 +119,7 @@ const ContactFormSection = () => {
                   />
                   <Button type="submit" size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" disabled={isSubmitting}>
                      {isSubmitting && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
-                    Send Message
+                    Get a Free Quote
                   </Button>
                 </form>
               </Form>

@@ -18,7 +18,14 @@ const AnalyzeWebsiteInputSchema = z.object({
 export type AnalyzeWebsiteInput = z.infer<typeof AnalyzeWebsiteInputSchema>;
 
 const AnalyzeWebsiteOutputSchema = z.object({
+  performanceScore: z.number().describe('A score from 0-100 representing the website\'s performance.'),
   summary: z.string().describe('A summary of the website analysis, highlighting areas for speed optimization.'),
+  issues: z.array(z.object({
+    id: z.string().describe('A unique ID for the issue, e.g., "image-optimization".'),
+    title: z.string().describe('A short, descriptive title for the issue.'),
+    description: z.string().describe('A longer description of the issue and why it matters.'),
+    severity: z.enum(['Low', 'Medium', 'High']).describe('The severity of the issue.'),
+  })).describe('A list of specific optimization issues found on the site.'),
 });
 export type AnalyzeWebsiteOutput = z.infer<typeof AnalyzeWebsiteOutputSchema>;
 
@@ -30,11 +37,15 @@ const prompt = ai.definePrompt({
   name: 'analyzeWebsitePrompt',
   input: {schema: AnalyzeWebsiteInputSchema},
   output: {schema: AnalyzeWebsiteOutputSchema},
-  prompt: `You are an expert website performance analyst.
+  prompt: `You are an expert website performance analyst. Your name is "VelocityBot".
 
-You will analyze the website at the given URL and provide a summary of areas for speed optimization.
+You will analyze the website at the given URL and provide a detailed performance report.
 
-URL: {{{url}}}`,
+1.  **Performance Score**: Generate a score between 0 and 100. A score of 0-49 is poor, 50-89 is average, and 90-100 is good. The score should reflect common web performance metrics like First Contentful Paint, Time to Interactive, and image optimization. For a fake site like "example.com", generate a score in the 50-70 range.
+2.  **Summary**: Write a 2-3 sentence summary of the analysis.
+3.  **Issues**: Identify 3-4 specific, common issues. For each issue, provide a unique id, a title, a description, and a severity level ('Low', 'Medium', or 'High'). Example issues include: "Optimize Images", "Reduce JavaScript Execution Time", "Leverage Browser Caching", "Eliminate Render-Blocking Resources".
+
+Analyze the website at the following URL: {{{url}}}`,
 });
 
 const analyzeWebsiteFlow = ai.defineFlow(
@@ -44,6 +55,11 @@ const analyzeWebsiteFlow = ai.defineFlow(
     outputSchema: AnalyzeWebsiteOutputSchema,
   },
   async input => {
+    // In a real app, you might use a tool to fetch the URL content.
+    // For this demo, we'll rely on the model's knowledge.
+    // To simulate a delay for a better user experience:
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
     const {output} = await prompt(input);
     return output!;
   }
