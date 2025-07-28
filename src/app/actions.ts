@@ -1,10 +1,16 @@
 'use server';
 
 import { z } from 'zod';
+import { redirect } from 'next/navigation';
+import { initializeSession, completeEmailStep } from '@/lib/session';
 
 const schema = z.object({
   url: z.string().url({ message: 'Please enter a valid URL.' }),
   email: z.string().email({ message: 'Please enter a valid email address.' }),
+});
+
+const urlOnlySchema = z.object({
+  url: z.string().url({ message: 'Please enter a valid URL.' }),
 });
 
 export type PageSpeedResult = {
@@ -29,6 +35,13 @@ export type FormState = {
   message: string;
   analysis?: PageSpeedResult;
   isError: boolean;
+};
+
+export type UrlAnalysisState = {
+  message: string;
+  analysis?: PageSpeedResult;
+  isError: boolean;
+  url?: string;
 };
 
 async function analyzeWithPageSpeed(url: string): Promise<PageSpeedResult> {
@@ -163,6 +176,107 @@ export async function handleAnalysis(
     console.error(error);
     return {
       message: 'An error occurred during analysis. Please check your URL and try again.',
+      isError: true,
+    };
+  }
+}
+
+export async function handleUrlAnalysis(
+  prevState: UrlAnalysisState,
+  formData: FormData
+): Promise<UrlAnalysisState> {
+  console.log('🔍 [DEBUG] URL Analysis started:', {
+    timestamp: new Date().toISOString(),
+    formDataUrl: formData.get('url'),
+    prevState
+  });
+
+  const validatedFields = urlOnlySchema.safeParse({
+    url: formData.get('url'),
+  });
+
+  if (!validatedFields.success) {
+    const errors = validatedFields.error.flatten().fieldErrors;
+    console.log('❌ [DEBUG] URL Validation failed:', errors);
+    return {
+      message: errors.url?.[0] || 'Invalid URL.',
+      isError: true,
+    };
+  }
+
+  try {
+    console.log('🌐 [DEBUG] Starting PageSpeed analysis for:', validatedFields.data.url);
+    const result = await analyzeWithPageSpeed(validatedFields.data.url);
+    console.log('✅ [DEBUG] PageSpeed analysis completed:', {
+      url: validatedFields.data.url,
+      performanceScore: result.performanceScore,
+      issuesCount: result.issues.length
+    });
+    
+    // Store analysis result in session
+    console.log('💾 [DEBUG] Initializing session...');
+    await initializeSession(validatedFields.data.url, result);
+    console.log('✅ [DEBUG] Session initialized successfully');
+    
+    return {
+      message: 'Analysis complete!',
+      analysis: result,
+      url: validatedFields.data.url,
+      isError: false,
+    };
+  } catch (error) {
+    console.error('💥 [DEBUG] URL Analysis failed:', {
+      error: error instanceof Error ? error.message : error,
+      stack: error instanceof Error ? error.stack : undefined,
+      url: validatedFields.data.url,
+      timestamp: new Date().toISOString()
+    });
+    return {
+      message: 'An error occurred during analysis. Please check your URL and try again.',
+      isError: true,
+    };
+  }
+}
+
+export async function handleEmailSubmission(
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
+  console.log('📧 [DEBUG] Email submission started:', {
+    timestamp: new Date().toISOString(),
+    formDataEmail: formData.get('email'),
+    prevState
+  });
+
+  const email = formData.get('email') as string;
+  
+  if (!email || !z.string().email().safeParse(email).success) {
+    console.log('❌ [DEBUG] Email validation failed:', { email });
+    return {
+      message: 'Please enter a valid email address.',
+      isError: true,
+    };
+  }
+
+  try {
+    console.log('💾 [DEBUG] Attempting to complete email step for:', email);
+    
+    // Complete email step and store in session
+    await completeEmailStep(email);
+    
+    console.log('✅ [DEBUG] Email step completed successfully, redirecting to results...');
+    
+    // Redirect to results page
+    redirect('/analysis-results');
+  } catch (error) {
+    console.error('💥 [DEBUG] Email submission failed:', {
+      error: error instanceof Error ? error.message : error,
+      stack: error instanceof Error ? error.stack : undefined,
+      email,
+      timestamp: new Date().toISOString()
+    });
+    return {
+      message: `Session error: ${error instanceof Error ? error.message : 'Unknown error'}`,
       isError: true,
     };
   }
