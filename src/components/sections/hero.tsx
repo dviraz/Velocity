@@ -10,6 +10,7 @@ import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Terminal, LoaderCircle, Sparkles, AlertCircle, ShieldAlert, Zap, Rocket } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 
 const initialState: FormState = {
   message: '',
@@ -79,112 +80,137 @@ const Hero = () => {
 
 
   return (
-    <section className="py-20 md:py-32">
-      <div className="container mx-auto text-center px-4">
-        <h1 className="text-4xl md:text-6xl font-bold font-headline text-foreground mb-4 leading-tight">
-          Don't Let a Slow Website Cost You Customers
-        </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-          Get an instant, AI-powered performance report. Discover exactly what's slowing you down and how to fix it—for free.
+    <section className="relative pt-32 pb-20 md:pt-48 md:pb-24 overflow-hidden">
+      <div className="absolute inset-0 swoosh-gradient"></div>
+      <div className="container mx-auto px-6 text-center relative z-10">
+        <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-4">
+          Losing Customers to a Slow Website?
+        </h2>
+        <p className="text-5xl md:text-6xl lg:text-7xl font-black hero-gradient-text mb-8">
+          We Make It Blazing Fast.
         </p>
+        <p className="max-w-3xl mx-auto text-lg md:text-xl text-gray-400 mb-12">
+          Stop letting slow load times kill your conversions. Get a free, instant analysis and see how much faster your site could be.
+        </p>
+        
+        <div className="max-w-2xl mx-auto bg-gray-800/50 p-4 rounded-xl border border-gray-700 mb-12">
+          <form
+            ref={formRef}
+            action={formAction}
+            className="flex flex-col sm:flex-row gap-3"
+          >
+            <Input
+              type="url"
+              name="url"
+              placeholder="Enter your website URL (e.g., https://example.com)"
+              required
+              className="w-full bg-gray-900 border-2 border-gray-600 focus:border-emerald-500 focus:ring-0 rounded-lg px-4 py-3 text-white placeholder-gray-500 transition-colors h-14 text-lg"
+              aria-label="Website URL"
+            />
+            <Button
+              type="submit"
+              disabled={pending}
+              className="cta-button bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg text-lg whitespace-nowrap h-14"
+            >
+              {pending ? (
+                <>
+                  <LoaderCircle className="mr-2 h-5 w-5 animate-spin" />
+                  Analyzing...
+                </>
+              ) : (
+                'Analyze My Site'
+              )}
+            </Button>
+          </form>
+          
+          <div ref={resultRef} className="mt-4">
+            {pending && !state.analysis && (
+              <div className="text-left p-6 bg-gray-900 rounded-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <LoaderCircle className="h-5 w-5 text-white animate-spin" />
+                  <p className="text-gray-300">VelocityBot is analyzing your site...</p>
+                </div>
+                <div className="space-y-3">
+                  <div className="h-4 bg-gray-700 rounded animate-pulse"></div>
+                  <div className="h-4 bg-gray-700 rounded animate-pulse w-3/4"></div>
+                  <div className="h-4 bg-gray-700 rounded animate-pulse w-1/2"></div>
+                </div>
+              </div>
+            )}
 
-        <form
-          ref={formRef}
-          action={formAction}
-          className="max-w-2xl mx-auto flex flex-col md:flex-row gap-4 mb-12"
-        >
-          <Input
-            type="url"
-            name="url"
-            placeholder="https://your-website.com"
-            required
-            className="h-14 text-lg"
-            aria-label="Website URL"
-          />
-          <SubmitButton />
-        </form>
+            {state.isError && (
+              <div className="text-left p-6 bg-red-900/50 rounded-lg border border-red-700">
+                <div className="flex items-center gap-3 mb-2">
+                  <AlertCircle className="h-5 w-5 text-red-400" />
+                  <h4 className="text-lg font-bold text-red-300">Analysis Error</h4>
+                </div>
+                <p className="text-red-200">{state.message}</p>
+              </div>
+            )}
 
-         <div className="max-w-4xl mx-auto">
-            <p className="text-sm font-semibold text-muted-foreground tracking-wider uppercase">Trusted by industry leaders</p>
-            <div className="mt-4 flex justify-center items-center gap-8 md:gap-12 flex-wrap">
-                <div className="flex items-center gap-2 text-muted-foreground font-bold text-lg"><Sparkles className="w-5 h-5 opacity-50"/>InnovateIQ</div>
-                <div className="flex items-center gap-2 text-muted-foreground font-bold text-lg"><Zap className="w-5 h-5 opacity-50"/>QuantumLeap</div>
-                <div className="flex items-center gap-2 text-muted-foreground font-bold text-lg"><ShieldAlert className="w-5 h-5 opacity-50"/>DataDriven</div>
-                <div className="flex items-center gap-2 text-muted-foreground font-bold text-lg"><Rocket className="w-5 h-5 opacity-50"/>TechCorp</div>
-            </div>
-        </div>
+            {!state.isError && state.analysis && (
+              <div className="text-left p-6 bg-gray-900 rounded-lg">
+                <h4 className="text-xl font-bold text-white mb-2">Analysis Complete!</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <p className="text-sm text-gray-400">Current Performance Grade</p>
+                    <p className="text-4xl font-bold text-red-500">
+                      {state.analysis.performanceScore >= 90 ? 'A' :
+                       state.analysis.performanceScore >= 80 ? 'B' :
+                       state.analysis.performanceScore >= 70 ? 'C' :
+                       state.analysis.performanceScore >= 60 ? 'D' : 'F'}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-400">Performance Score</p>
+                    <p className="text-4xl font-bold text-white">{progress}/100</p>
+                  </div>
+                </div>
+                
+                <div className="mb-4 p-4 bg-emerald-900/50 rounded-lg">
+                  <p className="font-bold text-emerald-300">
+                    Analysis Summary
+                  </p>
+                  <p className="text-sm text-emerald-400">{state.analysis.summary}</p>
+                </div>
 
-        <div ref={resultRef} className="max-w-4xl mx-auto mt-12 text-left">
-           {pending && !state.analysis && (
-            <Card className="shadow-lg animate-pulse">
-                <CardHeader>
-                    <CardTitle>VelocityBot is analyzing your site...</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="h-8 w-1/2 rounded-md bg-muted mb-4" />
-                    <div className="h-4 w-3/4 rounded-md bg-muted mb-2" />
-                    <div className="h-4 w-full rounded-md bg-muted" />
-                </CardContent>
-            </Card>
-           )}
-
-          {state.isError && (
-             <Alert variant="destructive" className="text-left">
-              <Terminal className="h-4 w-4" />
-              <AlertTitle className="font-bold font-headline">Analysis Error</AlertTitle>
-              <AlertDescription>{state.message}</AlertDescription>
-            </Alert>
-          )}
-
-          {!state.isError && state.analysis && (
-            <Card className="shadow-2xl rounded-xl">
-                <CardHeader className="bg-muted/30">
-                    <div className="flex flex-col md:flex-row gap-6 items-center">
-                        <div className="relative">
-                             <Progress value={progress} className="w-40 h-40 rounded-full" style={{
-                                background: `
-                                    radial-gradient(closest-side, hsl(var(--card)) 85%, transparent 86% 100%),
-                                    conic-gradient(hsl(var(--primary)) ${progress}%, hsl(var(--muted)) 0)
-                                `
-                             }}/>
-                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className="text-4xl font-bold text-foreground">{progress}</span>
-                                <span className="text-sm text-muted-foreground">/ 100</span>
-                             </div>
+                {state.analysis.issues && state.analysis.issues.length > 0 && (
+                  <div className="space-y-3">
+                    <h5 className="font-bold text-white">Issues Found:</h5>
+                    {state.analysis.issues.map((issue) => (
+                      <div 
+                        key={issue.id} 
+                        className="flex items-start gap-3 p-3 bg-gray-800 rounded border-l-4 border-gray-600"
+                        style={{
+                          borderLeftColor: issue.severity === 'High' ? '#ef4444' : 
+                                          issue.severity === 'Medium' ? '#eab308' : '#3b82f6'
+                        }}
+                      >
+                        {issueIcons[issue.severity]}
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-semibold text-white">{issue.title}</span>
+                            <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                              issue.severity === 'High' ? 'bg-red-500/20 text-red-300' :
+                              issue.severity === 'Medium' ? 'bg-yellow-500/20 text-yellow-300' :
+                              'bg-blue-500/20 text-blue-300'
+                            }`}>
+                              {issue.severity}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-400">{issue.description}</p>
                         </div>
-                        <div className="flex-1 text-center md:text-left">
-                            <CardTitle className="font-headline text-2xl md:text-3xl">Performance Report</CardTitle>
-                             <p className="text-muted-foreground mt-2">{state.analysis.summary}</p>
-                        </div>
-                    </div>
-                </CardHeader>
-                <CardContent>
-                    <h3 className="font-headline font-bold text-xl mb-4">Actionable Insights</h3>
-                     <Accordion type="single" collapsible className="w-full">
-                        {state.analysis.issues?.map((issue) => (
-                           <AccordionItem value={issue.id} key={issue.id}>
-                                <AccordionTrigger>
-                                    <div className="flex items-center gap-4">
-                                        {issueIcons[issue.severity]}
-                                        <span className="font-semibold">{issue.title}</span>
-                                        <span className={`text-sm font-semibold px-2.5 py-1 rounded-full ${
-                                            issue.severity === 'High' ? 'bg-red-100 text-red-800' :
-                                            issue.severity === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                                            'bg-blue-100 text-blue-800'
-                                        }`}>
-                                            {issue.severity}
-                                        </span>
-                                    </div>
-                                </AccordionTrigger>
-                                <AccordionContent className="pl-10 text-base">
-                                   {issue.description}
-                                </AccordionContent>
-                           </AccordionItem>
-                        ))}
-                    </Accordion>
-                </CardContent>
-            </Card>
-          )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <Button className="cta-button mt-4 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg">
+                  <Link href="#contact">Get My Full Optimization Plan</Link>
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
