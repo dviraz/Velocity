@@ -18,6 +18,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  env: {
+    NEXT_PUBLIC_PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
+    PAYPAL_API_URL: process.env.NODE_ENV === 'production' 
+      ? 'https://api-m.paypal.com' 
+      : 'https://api-m.sandbox.paypal.com',
+  }
 };
 
 export default nextConfig;

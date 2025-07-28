@@ -6,6 +6,7 @@ import Testimonials from '@/components/sections/testimonials';
 import ContactFormSection from '@/components/sections/contact-form-section';
 import HowItWorks from '@/components/sections/how-it-works';
 import Faq from '@/components/sections/faq';
+import Pricing from '@/components/sections/pricing';
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
         <Hero />
         <ServiceHighlights />
         <HowItWorks />
+        <Pricing />
         <Testimonials />
         <Faq />
         <ContactFormSection />

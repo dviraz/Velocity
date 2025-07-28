@@ -19,6 +19,9 @@ const Header = () => {
            <Link href="#how-it-works" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             How It Works
           </Link>
+           <Link href="#pricing" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+            Pricing
+          </Link>
           <Link href="#testimonials" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             Testimonials
           </Link>
