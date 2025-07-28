@@ -12,14 +12,20 @@ const Header = () => {
             VelocityLab
           </span>
         </Link>
-        <nav className="hidden md:flex gap-6 items-center">
-          <Link href="#features" className="text-sm font-medium hover:text-primary transition-colors">
+        <nav className="hidden md:flex gap-4 lg:gap-6 items-center">
+          <Link href="#features" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             Features
           </Link>
-          <Link href="#testimonials" className="text-sm font-medium hover:text-primary transition-colors">
+           <Link href="#how-it-works" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+            How It Works
+          </Link>
+          <Link href="#testimonials" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             Testimonials
           </Link>
-          <Button asChild>
+          <Link href="#faq" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+            FAQs
+          </Link>
+          <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
              <Link href="#contact">Talk to an Expert</Link>
           </Button>
         </nav>

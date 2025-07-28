@@ -8,7 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Terminal, LoaderCircle, Sparkles, AlertCircle, ShieldAlert, Zap } from 'lucide-react';
+import { Terminal, LoaderCircle, Sparkles, AlertCircle, ShieldAlert, Zap, Rocket } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 const initialState: FormState = {
@@ -29,7 +29,7 @@ function SubmitButton() {
       type="submit"
       disabled={pending}
       size="lg"
-      className="w-full md:w-auto bg-accent text-accent-foreground hover:bg-accent/90 font-bold"
+      className="w-full md:w-auto bg-accent text-accent-foreground hover:bg-accent/90 font-bold text-base"
     >
       {pending ? (
         <>
@@ -81,7 +81,7 @@ const Hero = () => {
   return (
     <section className="py-20 md:py-32">
       <div className="container mx-auto text-center px-4">
-        <h1 className="text-4xl md:text-6xl font-bold font-headline text-foreground mb-4">
+        <h1 className="text-4xl md:text-6xl font-bold font-headline text-foreground mb-4 leading-tight">
           Don't Let a Slow Website Cost You Customers
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
@@ -91,7 +91,7 @@ const Hero = () => {
         <form
           ref={formRef}
           action={formAction}
-          className="max-w-2xl mx-auto flex flex-col md:flex-row gap-4 mb-8"
+          className="max-w-2xl mx-auto flex flex-col md:flex-row gap-4 mb-12"
         >
           <Input
             type="url"
@@ -104,7 +104,17 @@ const Hero = () => {
           <SubmitButton />
         </form>
 
-        <div ref={resultRef} className="max-w-4xl mx-auto mt-8 text-left">
+         <div className="max-w-4xl mx-auto">
+            <p className="text-sm font-semibold text-muted-foreground tracking-wider uppercase">Trusted by industry leaders</p>
+            <div className="mt-4 flex justify-center items-center gap-8 md:gap-12 flex-wrap">
+                <div className="flex items-center gap-2 text-muted-foreground font-bold text-lg"><Sparkles className="w-5 h-5 opacity-50"/>InnovateIQ</div>
+                <div className="flex items-center gap-2 text-muted-foreground font-bold text-lg"><Zap className="w-5 h-5 opacity-50"/>QuantumLeap</div>
+                <div className="flex items-center gap-2 text-muted-foreground font-bold text-lg"><ShieldAlert className="w-5 h-5 opacity-50"/>DataDriven</div>
+                <div className="flex items-center gap-2 text-muted-foreground font-bold text-lg"><Rocket className="w-5 h-5 opacity-50"/>TechCorp</div>
+            </div>
+        </div>
+
+        <div ref={resultRef} className="max-w-4xl mx-auto mt-12 text-left">
            {pending && !state.analysis && (
             <Card className="shadow-lg animate-pulse">
                 <CardHeader>
@@ -127,13 +137,13 @@ const Hero = () => {
           )}
 
           {!state.isError && state.analysis && (
-            <Card className="shadow-xl">
-                <CardHeader>
+            <Card className="shadow-2xl rounded-xl">
+                <CardHeader className="bg-muted/30">
                     <div className="flex flex-col md:flex-row gap-6 items-center">
                         <div className="relative">
                              <Progress value={progress} className="w-40 h-40 rounded-full" style={{
                                 background: `
-                                    radial-gradient(closest-side, white 85%, transparent 86% 100%),
+                                    radial-gradient(closest-side, hsl(var(--card)) 85%, transparent 86% 100%),
                                     conic-gradient(hsl(var(--primary)) ${progress}%, hsl(var(--muted)) 0)
                                 `
                              }}/>
@@ -157,7 +167,7 @@ const Hero = () => {
                                     <div className="flex items-center gap-4">
                                         {issueIcons[issue.severity]}
                                         <span className="font-semibold">{issue.title}</span>
-                                        <span className={`text-sm px-2 py-1 rounded-full ${
+                                        <span className={`text-sm font-semibold px-2.5 py-1 rounded-full ${
                                             issue.severity === 'High' ? 'bg-red-100 text-red-800' :
                                             issue.severity === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
                                             'bg-blue-100 text-blue-800'
@@ -166,7 +176,7 @@ const Hero = () => {
                                         </span>
                                     </div>
                                 </AccordionTrigger>
-                                <AccordionContent className="pl-10">
+                                <AccordionContent className="pl-10 text-base">
                                    {issue.description}
                                 </AccordionContent>
                            </AccordionItem>

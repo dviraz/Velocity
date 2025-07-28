@@ -59,18 +59,18 @@ const ContactFormSection = () => {
   }
 
   return (
-    <section id="contact" className="py-20 md:py-24 bg-muted/50">
+    <section id="contact" className="py-20 md:py-32 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-                 <h2 className="text-3xl md:text-4xl font-bold font-headline text-foreground">
+                 <h2 className="text-3xl md:text-4xl font-bold font-headline text-foreground leading-tight">
                     Ready to Go Supersonic?
                 </h2>
                 <p className="text-lg text-muted-foreground mt-4">
-                    Fill out the form to get in touch with our optimization experts. We&apos;re excited to help you achieve your performance goals.
+                    Fill out the form to get in touch with our optimization experts. We&apos;re excited to help you achieve your performance goals and discuss a plan that fits your needs.
                 </p>
             </div>
-          <Card className="shadow-xl">
+          <Card className="shadow-2xl rounded-xl">
             <CardContent className="p-8">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -105,10 +105,10 @@ const ContactFormSection = () => {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Message</FormLabel>
+                        <FormLabel>Tell us about your project</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Tell us about your project..."
+                            placeholder="What are your performance goals?"
                             className="min-h-[120px]"
                             {...field}
                           />
@@ -117,7 +117,7 @@ const ContactFormSection = () => {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" disabled={isSubmitting}>
+                  <Button type="submit" size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 text-base font-bold" disabled={isSubmitting}>
                      {isSubmitting && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
                     Get a Free Quote
                   </Button>
