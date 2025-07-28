@@ -97,7 +97,7 @@ const Hero = () => {
           <form
             ref={formRef}
             action={formAction}
-            className="flex flex-col sm:flex-row gap-3"
+            className="flex flex-col gap-3"
           >
             <Input
               type="url"
@@ -107,10 +107,18 @@ const Hero = () => {
               className="w-full bg-gray-900 border-2 border-gray-600 focus:border-emerald-500 focus:ring-0 rounded-lg px-4 py-3 text-white placeholder-gray-500 transition-colors h-14 text-lg"
               aria-label="Website URL"
             />
+            <Input
+              type="email"
+              name="email"
+              placeholder="Enter your email to receive the analysis"
+              required
+              className="w-full bg-gray-900 border-2 border-gray-600 focus:border-emerald-500 focus:ring-0 rounded-lg px-4 py-3 text-white placeholder-gray-500 transition-colors h-14 text-lg"
+              aria-label="Email Address"
+            />
             <Button
               type="submit"
               disabled={pending}
-              className="cta-button bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg text-lg whitespace-nowrap h-14"
+              className="cta-button bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg text-lg h-14"
             >
               {pending ? (
                 <>
@@ -118,7 +126,7 @@ const Hero = () => {
                   Analyzing...
                 </>
               ) : (
-                'Analyze My Site'
+                'Get Free Analysis'
               )}
             </Button>
           </form>
@@ -128,7 +136,7 @@ const Hero = () => {
               <div className="text-left p-6 bg-gray-900 rounded-lg">
                 <div className="flex items-center gap-3 mb-4">
                   <LoaderCircle className="h-5 w-5 text-white animate-spin" />
-                  <p className="text-gray-300">VelocityBot is analyzing your site...</p>
+                  <p className="text-gray-300">Analyzing your website with Google PageSpeed Insights...</p>
                 </div>
                 <div className="space-y-3">
                   <div className="h-4 bg-gray-700 rounded animate-pulse"></div>
@@ -150,10 +158,10 @@ const Hero = () => {
 
             {!state.isError && state.analysis && (
               <div className="text-left p-6 bg-gray-900 rounded-lg">
-                <h4 className="text-xl font-bold text-white mb-2">Analysis Complete!</h4>
+                <h4 className="text-xl font-bold text-white mb-2">PageSpeed Analysis Complete!</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <p className="text-sm text-gray-400">Current Performance Grade</p>
+                    <p className="text-sm text-gray-400">Performance Grade</p>
                     <p className="text-4xl font-bold text-red-500">
                       {state.analysis.performanceScore >= 90 ? 'A' :
                        state.analysis.performanceScore >= 80 ? 'B' :
@@ -167,6 +175,22 @@ const Hero = () => {
                   </div>
                 </div>
                 
+                {/* Core Web Vitals Metrics */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                  <div className="bg-gray-800 p-3 rounded-lg">
+                    <p className="text-xs text-gray-400">First Contentful Paint</p>
+                    <p className="text-lg font-bold text-white">{(state.analysis.metrics.firstContentfulPaint / 1000).toFixed(1)}s</p>
+                  </div>
+                  <div className="bg-gray-800 p-3 rounded-lg">
+                    <p className="text-xs text-gray-400">Largest Contentful Paint</p>
+                    <p className="text-lg font-bold text-white">{(state.analysis.metrics.largestContentfulPaint / 1000).toFixed(1)}s</p>
+                  </div>
+                  <div className="bg-gray-800 p-3 rounded-lg">
+                    <p className="text-xs text-gray-400">Cumulative Layout Shift</p>
+                    <p className="text-lg font-bold text-white">{state.analysis.metrics.cumulativeLayoutShift}</p>
+                  </div>
+                </div>
+                
                 <div className="mb-4 p-4 bg-emerald-900/50 rounded-lg">
                   <p className="font-bold text-emerald-300">
                     Analysis Summary
@@ -176,7 +200,7 @@ const Hero = () => {
 
                 {state.analysis.issues && state.analysis.issues.length > 0 && (
                   <div className="space-y-3">
-                    <h5 className="font-bold text-white">Issues Found:</h5>
+                    <h5 className="font-bold text-white">Optimization Opportunities:</h5>
                     {state.analysis.issues.map((issue) => (
                       <div 
                         key={issue.id} 
