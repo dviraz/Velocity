@@ -8,6 +8,7 @@ import FinalLeadForm from '@/components/sections/final-lead-form';
 export default async function AnalysisResultsPage() {
   // Get session data - redirect if no valid session
   // Updated: July 29, 2025 - Testing git sync with GitHub repository
+  // Git config updated to use dviraz86 account
   const session = await validateSession();
   
   if (!session || !session.analysis || !session.email) {
