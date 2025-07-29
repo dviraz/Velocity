@@ -199,79 +199,116 @@ const ResultsDisplay = ({ analysisData, isLoading = false, onRetry }: ResultsDis
               </p>
             </div>
 
-            {/* Business Impact Summary */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-              {[
-                { data: businessImpact.bounceRateIncrease, label: 'Bounce Rate Impact', icon: TrendingDown, color: 'red', prefix: '+' },
-                { data: businessImpact.conversionImpact, label: 'Conversion Impact', icon: TrendingDown, color: 'orange', prefix: '' },
-                { data: businessImpact.seoImpact, label: 'SEO Impact', icon: TrendingUp, color: 'blue', prefix: '' }
-              ].map((impact, index) => (
-                <div
-                  key={impact.label}
-                  className={`bg-${impact.color}-50 p-4 rounded-lg border border-${impact.color}-200 transition-all duration-700 ${isAnimated ? 'animate-in fade-in-50 slide-in-from-bottom-4' : 'opacity-0'}`}
-                  style={{ animationDelay: `${800 + index * 100}ms` }}
-                >
-                  <div className="flex items-center space-x-2 mb-2">
-                    <impact.icon className={`h-5 w-5 text-${impact.color}-600`} />
-                    <span className={`font-semibold text-${impact.color}-800 text-sm md:text-base`}>{impact.label}</span>
+            {/* Enhanced Business Impact Summary */}
+            <div className="mt-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
+                Business Impact Analysis
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  { data: businessImpact.bounceRateIncrease, label: 'Bounce Rate Impact', icon: TrendingDown, color: 'red', prefix: '+', description: 'Higher bounce rates hurt user engagement' },
+                  { data: businessImpact.conversionImpact, label: 'Conversion Impact', icon: TrendingDown, color: 'orange', prefix: '', description: 'Slow sites reduce conversion rates' },
+                  { data: businessImpact.seoImpact, label: 'SEO Impact', icon: TrendingUp, color: 'blue', prefix: '', description: 'Search rankings affected by performance' }
+                ].map((impact, index) => (
+                  <div
+                    key={impact.label}
+                    className={`bg-white p-6 rounded-xl border-2 border-${impact.color}-200 shadow-lg hover:shadow-xl transition-all duration-700 hover:scale-105 ${isAnimated ? 'animate-in fade-in-50 slide-in-from-bottom-4' : 'opacity-0'}`}
+                    style={{ animationDelay: `${800 + index * 100}ms` }}
+                  >
+                    <div className="text-center space-y-4">
+                      <div className={`mx-auto w-12 h-12 bg-${impact.color}-100 rounded-full flex items-center justify-center`}>
+                        <impact.icon className={`h-6 w-6 text-${impact.color}-600`} />
+                      </div>
+                      <div>
+                        <h4 className={`font-bold text-lg text-${impact.color}-800 mb-1`}>{impact.label}</h4>
+                        <div className={`text-3xl font-black text-${impact.color}-700 mb-2`}>{impact.prefix}{impact.data}</div>
+                        <p className="text-sm text-gray-600">{impact.description}</p>
+                      </div>
+                    </div>
                   </div>
-                  <p className={`text-${impact.color}-700 font-bold`}>{impact.prefix}{impact.data}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Optimization Opportunities Section */}
+        {/* Enhanced Optimization Opportunities Section */}
         <div className={`transition-all duration-700 delay-200 ${isAnimated ? 'animate-in fade-in-50 slide-in-from-bottom-4' : 'opacity-0'}`}>
-          <div className="flex items-center space-x-3 mb-6">
-            <Zap className="h-6 w-6 text-emerald-600" />
-            <h2 className="text-2xl font-bold text-gray-900">
-              Top Optimization Opportunities
-            </h2>
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center space-x-3 mb-4">
+              <Zap className="h-8 w-8 text-emerald-600" />
+              <h2 className="text-3xl font-bold text-gray-900">
+                Priority Optimization Opportunities
+              </h2>
+            </div>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              These improvements will have the biggest impact on your website's performance and business metrics
+            </p>
           </div>
           
           {topIssues.length > 0 ? (
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
               {topIssues.map((issue, index) => (
                 <Card
                   key={issue.id}
-                  className={`border-l-4 border-l-gray-400 hover:shadow-lg transition-all duration-500 hover:scale-[1.02] ${isAnimated ? 'animate-in fade-in-50 slide-in-from-bottom-4' : 'opacity-0'}`}
+                  className={`relative overflow-hidden border-2 hover:shadow-2xl transition-all duration-500 hover:scale-[1.03] ${
+                    issue.severity === 'High' ? 'border-red-300 bg-gradient-to-br from-red-50 to-orange-50' :
+                    issue.severity === 'Medium' ? 'border-yellow-300 bg-gradient-to-br from-yellow-50 to-amber-50' :
+                    'border-blue-300 bg-gradient-to-br from-blue-50 to-indigo-50'
+                  } ${isAnimated ? 'animate-in fade-in-50 slide-in-from-bottom-4' : 'opacity-0'}`}
                   style={{ animationDelay: `${1200 + index * 150}ms` }}
                 >
-                  <CardHeader className="pb-3">
+                  {/* Priority indicator */}
+                  <div className={`absolute top-0 left-0 w-2 h-full ${
+                    issue.severity === 'High' ? 'bg-red-500' :
+                    issue.severity === 'Medium' ? 'bg-yellow-500' : 'bg-blue-500'
+                  }`}></div>
+                  
+                  <CardHeader className="pb-4 pl-6">
                     <div className="flex items-start justify-between">
-                      <div className="flex items-center space-x-3">
-                        <span className="text-2xl">{issue.icon}</span>
-                        <div>
-                          <CardTitle className="text-lg text-gray-900">
+                      <div className="flex items-start space-x-4">
+                        <div className={`p-3 rounded-xl ${
+                          issue.severity === 'High' ? 'bg-red-100' :
+                          issue.severity === 'Medium' ? 'bg-yellow-100' : 'bg-blue-100'
+                        }`}>
+                          <span className="text-3xl">{issue.icon}</span>
+                        </div>
+                        <div className="flex-1">
+                          <CardTitle className="text-xl font-bold text-gray-900 mb-2">
                             {issue.businessTitle}
                           </CardTitle>
-                          <div className="flex items-center space-x-2 mt-1">
+                          <div className="flex items-center space-x-3">
                             <Badge
                               variant="outline"
-                              className={getSeverityColor(issue.severity)}
+                              className={`font-semibold ${getSeverityColor(issue.severity)}`}
                             >
                               {issue.severity} Priority
                             </Badge>
-                            <span className="text-sm text-gray-500">
-                              Issue #{index + 1}
+                            <span className="text-sm font-medium text-gray-600">
+                              Opportunity #{index + 1}
                             </span>
                           </div>
                         </div>
                       </div>
-                      <AlertTriangle className={`h-5 w-5 ${
+                      <AlertTriangle className={`h-6 w-6 ${
                         issue.severity === 'High' ? 'text-red-500' :
                         issue.severity === 'Medium' ? 'text-yellow-500' : 'text-blue-500'
                       }`} />
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-700 leading-relaxed">
-                      {issue.businessImpact}
-                    </p>
-                    <div className="mt-3 text-xs text-gray-500">
-                      Technical: {issue.originalTitle}
+                  <CardContent className="pl-6">
+                    {/* Business Impact - Most Prominent */}
+                    <div className="mb-4">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">Business Impact</h4>
+                      <p className="text-gray-700 leading-relaxed text-base">
+                        {issue.businessImpact}
+                      </p>
+                    </div>
+                    
+                    {/* Technical Details - Secondary */}
+                    <div className="bg-white/60 rounded-lg p-4 border border-gray-200">
+                      <h5 className="text-sm font-medium text-gray-600 mb-1">Technical Details</h5>
+                      <p className="text-sm text-gray-600">{issue.originalTitle}</p>
                     </div>
                   </CardContent>
                 </Card>

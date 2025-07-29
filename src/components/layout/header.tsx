@@ -41,7 +41,7 @@ const Header = () => {
             </g>
           </svg>
           <span className="logo-font-poppins text-2xl font-bold text-white">
-            Velocity<span className="text-emerald-400">Lab</span>
+            Get Speed
           </span>
         </Link>
         

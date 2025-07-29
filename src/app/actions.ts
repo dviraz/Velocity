@@ -2,7 +2,7 @@
 
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
-import { initializeSession, completeEmailStep } from '@/lib/session';
+import { initializeSession, completeEmailStep, clearSession } from '@/lib/session';
 
 const schema = z.object({
   url: z.string().url({ message: 'Please enter a valid URL.' }),
@@ -275,9 +275,23 @@ export async function handleEmailSubmission(
       email,
       timestamp: new Date().toISOString()
     });
+    
+    // User-friendly error message instead of technical error
     return {
-      message: `Session error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      message: "We couldn't process your request at this time. Please check your internet connection or try again in a few moments.",
       isError: true,
     };
+  }
+}
+
+export async function resetSession(): Promise<{ success: boolean }> {
+  try {
+    console.log('🔄 [DEBUG] Resetting session...');
+    await clearSession();
+    console.log('✅ [DEBUG] Session cleared successfully');
+    return { success: true };
+  } catch (error) {
+    console.error('💥 [DEBUG] Failed to reset session:', error);
+    return { success: false };
   }
 }

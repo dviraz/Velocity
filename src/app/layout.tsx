@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'VelocityLab',
+  title: 'Get Speed',
   description: 'High-performance website speed optimization service.',
 };
 

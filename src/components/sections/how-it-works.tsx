@@ -4,7 +4,7 @@ const steps = [
   {
     icon: <ScanLine className="w-10 h-10 text-primary" />,
     title: "1. Free AI Analysis",
-    description: "Submit your website URL and our AI, VelocityBot, performs a deep analysis, identifying key performance bottlenecks.",
+    description: "Submit your website URL and our AI, Get Speed AI, performs a deep analysis, identifying key performance bottlenecks.",
   },
   {
     icon: <Wrench className="w-10 h-10 text-primary" />,

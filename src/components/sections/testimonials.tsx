@@ -14,18 +14,18 @@ const testimonials = [
   {
     name: "Sarah L.",
     title: "CEO, TechBloom",
-    quote: "VelocityLab transformed our user experience. Our bounce rate dropped by 30% almost overnight!",
+    quote: "Get Speed transformed our user experience. Our bounce rate dropped by 30% almost overnight!",
     avatar: "SL",
-    image: "https://placehold.co/100x100.png",
+    image: "https://images.unsplash.com/photo-1494790108755-2616b612b494?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
     metric: "70% Load Time Reduction",
     dataAiHint: "woman portrait"
   },
   {
     name: "Mike Chen",
     title: "Founder, DailyGrind",
-    quote: "The speed increase was incredible. Our mobile conversion rates have doubled since we worked with VelocityLab.",
+    quote: "The speed increase was incredible. Our mobile conversion rates have doubled since we worked with Get Speed.",
     avatar: "MC",
-    image: "https://placehold.co/100x100.png",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
     metric: "2x Mobile Conversions",
     dataAiHint: "man portrait"
   },
@@ -34,7 +34,7 @@ const testimonials = [
     title: "Marketing Director, Moda",
     quote: "I was skeptical at first, but the results speak for themselves. Our site is faster than ever and our customers have noticed.",
     avatar: "IR",
-    image: "https://placehold.co/100x100.png",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
     metric: "98/100 Performance Score",
     dataAiHint: "woman smiling"
   },
@@ -43,7 +43,7 @@ const testimonials = [
     title: "CTO, QuantumLeap",
     quote: "The team's technical expertise is top-notch. They identified and fixed complex issues our previous developers missed.",
     avatar: "DK",
-    image: "https://placehold.co/100x100.png",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
     metric: "50+ Core Web Vitals",
     dataAiHint: "man smiling"
   },

@@ -248,32 +248,3 @@ export async function submitLeadToCRM(leadData: LeadData): Promise<{ success: bo
     };
   }
 }
-
-// Utility function to validate CRM configuration
-export function validateCRMConfig(): { valid: boolean; errors: string[] } {
-  const config = getCRMConfig();
-  const errors: string[] = [];
-
-  if (config.type === 'none') {
-    return { valid: true, errors: [] };
-  }
-
-  if (!config.apiKey) {
-    errors.push(`${config.type.toUpperCase()} API key is required`);
-  }
-
-  switch (config.type) {
-    case 'salesforce':
-      if (!config.salesforceInstanceUrl) {
-        errors.push('Salesforce instance URL is required');
-      }
-      break;
-    case 'pipedrive':
-      if (!config.pipedriveCompanyDomain) {
-        errors.push('Pipedrive company domain is required');
-      }
-      break;
-  }
-
-  return { valid: errors.length === 0, errors };
-}
