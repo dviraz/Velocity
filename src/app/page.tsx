@@ -1,8 +1,9 @@
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import Hero from '@/components/sections/hero';
+import InfiniteLogoScroller from '@/components/sections/infinite-logo-scroller';
 import TrustedBy from '@/components/sections/trusted-by';
-import ComparisonSlider from '@/components/sections/comparison-slider';
+import BeforeAfter from '@/components/sections/before-after';
 import ServiceHighlights from '@/components/sections/service-highlights';
 import Testimonials from '@/components/sections/testimonials';
 import ContactFormSection from '@/components/sections/contact-form-section';
@@ -17,7 +18,7 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <TrustedBy />
-        <ComparisonSlider />
+        <BeforeAfter />
         <HowItWorks />
         <ServiceHighlights />
         <Pricing />
